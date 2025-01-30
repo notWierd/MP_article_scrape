@@ -6,7 +6,7 @@ This project scrapes articles from Media Permata.
 
 ### 1. Clone the Repository
 ```sh
-git clone https://github.com/your-username/MP_article_scrape.git
+git clone https://github.com/notWierd/MP_article_scrape.git
 cd MP_article_scrape
 ```
 
@@ -23,7 +23,7 @@ Download the latest ChromeDriver from [here](https://developer.chrome.com/docs/c
 - Note the path where you extracted the `chromedriver` executable.
 
 ### 4. Update the ChromeDriver Path
-Open the scraper script (e.g., `media_permata.py`) and update the ChromeDriver path:
+Open the scraper script (e.g., `media_permata_scrape.py`) and update the ChromeDriver path:
 ```python
 from selenium import webdriver
 
