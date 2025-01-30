@@ -33,7 +33,7 @@ service = Service("your/path/to/chromedriver")
 ## Usage
 Open the script and modify the following:
 
-1. Category Links: Update the category_links list with the categories you want to scrape. Please do note that the following categories has been scraped(hiburan, surat_pembaca and borneo)
+1. Category Links: Update the `category_links` list with the categories you want to scrape. Please do note that the following categories has been scraped (hiburan, surat_pembaca and borneo)
 
 2. Output File Names: Change the CSV file names accordingly to store the scraped data.
 Run the scraper with:
