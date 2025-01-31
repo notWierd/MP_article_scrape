@@ -96,7 +96,10 @@ async def extract_article_details(session, article_url, category_name, writer, s
             title = article_soup.find("h1", class_="tdb-title-text").get_text(strip=True) if article_soup.find("h1", class_="tdb-title-text") else "N/A"
             author = "---"
             content = ""
-            date = article_soup.find("div", class_="td_block_wrap").get_text(strip=True) if article_soup.find("div", class_="td_block_wrap") else "N/A"
+            
+            # Extract date from the correct div structure
+            date_block = article_soup.find("div", class_="td_block_wrap tdb_single_date tdi_86 td-pb-border-top time_icon td_block_template_1 tdb-post-meta")
+            date = date_block.find("div", class_="tdb-block-inner td-fix-index").get_text(strip=True) if date_block else "N/A"
 
             article_block = article_soup.find("div", class_="tdb_single_content")
             if article_block:
