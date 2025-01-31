@@ -6,6 +6,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
+from datetime import datetime
 import time
 
 # Setup Selenium for scrolling and loading page content
@@ -97,9 +98,14 @@ async def extract_article_details(session, article_url, category_name, writer, s
             author = "---"
             content = ""
             
-            # Extract date from the correct div structure
+           # Extract date from the correct div structure
             date_block = article_soup.find("div", class_="td_block_wrap tdb_single_date tdi_86 td-pb-border-top time_icon td_block_template_1 tdb-post-meta")
-            date = date_block.find("div", class_="tdb-block-inner td-fix-index").get_text(strip=True) if date_block else "N/A"
+            raw_date = date_block.find("div", class_="tdb-block-inner td-fix-index").get_text(strip=True) if date_block else "N/A"
+            # Convert to DD/MM/YYYY format
+            try:
+                formatted_date = datetime.strptime(raw_date, "%B %d, %Y").strftime("%d/%m/%Y")
+            except ValueError:
+                formatted_date = raw_date  # Keep as-is if format doesn't match
 
             article_block = article_soup.find("div", class_="tdb_single_content")
             if article_block:
@@ -124,7 +130,7 @@ async def extract_article_details(session, article_url, category_name, writer, s
                     print(f"Failed to fetch content for {article_url} after {max_retries} attempts.")
                     writer.writerow({
                         "Category": category_name,
-                        "Date": date,
+                        "Date": formatted_date,
                         "Title": title,
                         "Author": author,
                         "Content": "N/A",  # Content is empty, set as "N/A"
@@ -135,7 +141,7 @@ async def extract_article_details(session, article_url, category_name, writer, s
             # Write the data to the CSV if content is not empty
             writer.writerow({
                 "Category": category_name,
-                "Date": date,
+                "Date": formatted_date,
                 "Title": title,
                 "Author": author,
                 "Content": content,
@@ -152,7 +158,7 @@ async def extract_article_details(session, article_url, category_name, writer, s
                 # Save article details even if content is empty after retries
                 writer.writerow({
                     "Category": category_name,
-                    "Date": date,
+                    "Date": formatted_date,
                     "Title": title,
                     "Author": author,
                     "Content": "N/A",  # Content is empty, set as "N/A"
