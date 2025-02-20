@@ -5,6 +5,7 @@ import asyncio
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 from datetime import datetime
 import time
@@ -14,8 +15,11 @@ def setup_selenium():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--incognito")
-    service = Service("C:/Users/Asus/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe")  # Replace with your path
-    driver = webdriver.Chrome(service=service, options=chrome_options)
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(
+        options=chrome_options,
+        service=Service(executable_path=ChromeDriverManager().install()),
+    )
     return driver
 
 # Function to scroll the page using Selenium
